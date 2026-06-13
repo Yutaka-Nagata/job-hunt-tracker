@@ -198,22 +198,22 @@ export default function CompaniesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold text-gray-800">企業管理</h1>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button onClick={() => setShowStatusManager(true)}
-            className="flex items-center gap-2 border border-gray-300 text-gray-600 px-4 py-3 rounded-lg text-sm font-medium hover:bg-gray-50">
-            <Settings size={15} /> ステータス管理
+            className="flex items-center gap-1.5 border border-gray-300 text-gray-600 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50">
+            <Settings size={14} /> <span className="hidden sm:inline">ステータス管理</span><span className="sm:hidden">管理</span>
           </button>
           <button onClick={openAdd}
-            className="flex items-center gap-2 bg-brand-500 text-white px-5 py-3 rounded-lg text-sm font-medium hover:opacity-90">
-            <Plus size={16} /> 企業を追加
+            className="flex items-center gap-1.5 bg-brand-500 text-white px-3 py-2.5 rounded-lg text-sm font-medium hover:opacity-90">
+            <Plus size={15} /> <span className="hidden sm:inline">企業を追加</span><span className="sm:hidden">追加</span>
           </button>
         </div>
       </div>
 
       {/* フィルター */}
-      <div className="bg-white rounded-lg shadow-sm p-6 space-y-5">
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 space-y-4 sm:space-y-5">
         <div className="flex items-center gap-2 text-xs font-medium text-gray-500">
           <Filter size={13} />フィルター（複数選択可）
           {activeFilterCount > 0 && (
@@ -254,20 +254,20 @@ export default function CompaniesPage() {
       </div>
 
       {/* ソート */}
-      <div className="flex items-center gap-3 text-xs text-gray-500 px-1">
-        <ArrowUpDown size={13} />
-        <span>並び替え：</span>
-        {([["desirability","志望度"],["deadline","締切"],["interviewDate","面接日程"],["status","ステータス"]] as [SortKey,string][]).map(([k, l]) => (
+      <div className="flex items-center gap-2 text-xs text-gray-500 px-1 overflow-x-auto">
+        <ArrowUpDown size={13} className="shrink-0" />
+        <span className="shrink-0">並び替え：</span>
+        {([["desirability","志望度"],["deadline","締切"],["interviewDate","面接"],["status","ステータス"]] as [SortKey,string][]).map(([k, l]) => (
           <button key={k} onClick={() => {
             if (sortKey === k) setSortDir(d => d === "asc" ? "desc" : "asc");
             else { setSortKey(k); setSortDir(k === "desirability" ? "desc" : "asc"); }
           }}
-            className={`flex items-center gap-1 px-3 py-1 rounded ${sortKey === k ? "bg-brand-50 text-brand-500 font-medium" : "hover:bg-gray-100"}`}>
+            className={`flex items-center gap-1 px-2.5 py-1 rounded shrink-0 ${sortKey === k ? "bg-brand-50 text-brand-500 font-medium" : "hover:bg-gray-100"}`}>
             {l}
             {sortKey === k && (sortDir === "asc" ? <ArrowUp size={11} /> : <ArrowDown size={11} />)}
           </button>
         ))}
-        <span className="ml-auto text-gray-400">{sorted.length}社</span>
+        <span className="ml-auto text-gray-400 shrink-0">{sorted.length}社</span>
       </div>
 
       {sorted.length === 0 ? (
@@ -277,7 +277,7 @@ export default function CompaniesPage() {
       ) : (
         <div className="space-y-4">
           {sorted.map((c) => (
-            <div key={c.id} className="bg-white rounded-lg shadow-sm p-6 flex items-start justify-between gap-6">
+            <div key={c.id} className="bg-white rounded-lg shadow-sm p-4 sm:p-6 flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 flex-wrap">
                   <span className="font-semibold text-gray-800">{c.name}</span>
@@ -310,7 +310,7 @@ export default function CompaniesPage() {
       {/* 企業フォームモーダル */}
       {showForm && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-sm w-full max-w-lg p-8 space-y-5 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-sm w-full max-w-lg p-5 sm:p-8 space-y-5 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-lg text-gray-800">{editId ? "企業を編集" : "企業を追加"}</h2>
               <button onClick={() => setShowForm(false)} className="text-gray-400 hover:text-gray-600"><X size={20} /></button>
@@ -319,7 +319,7 @@ export default function CompaniesPage() {
               <Field label="企業名 *">
                 <input className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="株式会社〇〇" />
               </Field>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="業界">
                   <input className="input" value={form.industry} onChange={(e) => setForm({ ...form, industry: e.target.value })} placeholder="IT・通信" />
                 </Field>
@@ -327,7 +327,7 @@ export default function CompaniesPage() {
                   <input className="input" value={form.jobType} onChange={(e) => setForm({ ...form, jobType: e.target.value })} placeholder="エンジニア" />
                 </Field>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="ステータス">
                   <select className="input" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })}>
                     {statuses.map((s) => <option key={s}>{s}</option>)}
@@ -350,7 +350,7 @@ export default function CompaniesPage() {
                     onChange={(e) => setForm({ ...form, interviewDate: e.target.value })} />
                 </Field>
               )}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="応募日">
                   <input className="input" type="date" value={form.appliedAt} onChange={(e) => setForm({ ...form, appliedAt: e.target.value })} />
                 </Field>
@@ -377,7 +377,7 @@ export default function CompaniesPage() {
       {/* ステータス管理モーダル */}
       {showStatusManager && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-5 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-lg text-gray-800">ステータス管理</h2>
               <button onClick={() => setShowStatusManager(false)} className="text-gray-400 hover:text-gray-600"><X size={20} /></button>

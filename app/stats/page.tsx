@@ -51,7 +51,7 @@ export default function StatsPage() {
       <h1 className="text-2xl font-semibold text-gray-800">統計</h1>
 
       {/* KPI カード */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
         <StatCard icon={<Building2 className="text-brand-500" />} label="選考中" value={activeCompanies.length} unit="社" />
         <StatCard icon={<Trophy className="text-gray-500" />} label="内定" value={offers.length} unit="社" />
         <StatCard icon={<CheckSquare className="text-gray-500" />} label="未完了タスク" value={pendingTasks.length} unit="件" />
@@ -60,8 +60,8 @@ export default function StatsPage() {
 
       {/* 選考ステータス内訳 */}
       {statusCount.length > 0 && (
-        <section className="bg-white rounded-lg shadow-sm p-8">
-          <h2 className="font-semibold text-gray-800 mb-6">選考ステータス内訳</h2>
+        <section className="bg-white rounded-lg shadow-sm p-4 sm:p-8">
+          <h2 className="font-semibold text-gray-800 mb-4 sm:mb-6">選考ステータス内訳</h2>
           <div className="flex flex-wrap gap-3">
             {statusCount.map(({ status, count }) => (
               <div key={status} className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-2">
@@ -75,7 +75,7 @@ export default function StatsPage() {
       )}
 
       {/* 通過率 */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6">
         <KpiCard label="登録企業数" value={companies.length} unit="社" />
         <KpiCard label="応募済み" value={applied} unit="社" />
         <KpiCard label="書類通過率" value={esRate !== null ? `${esRate}%` : "—"} />
@@ -85,9 +85,9 @@ export default function StatsPage() {
       {companies.length === 0 ? (
         <div className="text-center py-24 text-gray-400">企業を追加すると統計が表示されます</div>
       ) : (
-        <div className="grid md:grid-cols-2 gap-9">
-          <section className="bg-white rounded-lg shadow-sm p-8">
-            <h2 className="font-semibold text-gray-800 mb-6">ステータス別（棒グラフ）</h2>
+        <div className="grid md:grid-cols-2 gap-5 sm:gap-9">
+          <section className="bg-white rounded-lg shadow-sm p-4 sm:p-8">
+            <h2 className="font-semibold text-gray-800 mb-4 sm:mb-6">ステータス別（棒グラフ）</h2>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={statusData}>
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} />
@@ -102,8 +102,8 @@ export default function StatsPage() {
             </ResponsiveContainer>
           </section>
 
-          <section className="bg-white rounded-lg shadow-sm p-8">
-            <h2 className="font-semibold text-gray-800 mb-6">ステータス別（円グラフ）</h2>
+          <section className="bg-white rounded-lg shadow-sm p-4 sm:p-8">
+            <h2 className="font-semibold text-gray-800 mb-4 sm:mb-6">ステータス別（円グラフ）</h2>
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie data={statusData} dataKey="count" nameKey="name" cx="50%" cy="50%" outerRadius={80}
@@ -119,8 +119,8 @@ export default function StatsPage() {
           </section>
 
           {industryData.length > 0 && (
-            <section className="bg-white rounded-lg shadow-sm p-8 md:col-span-2">
-              <h2 className="font-semibold text-gray-800 mb-6">業界別（棒グラフ）</h2>
+            <section className="bg-white rounded-lg shadow-sm p-4 sm:p-8 md:col-span-2">
+              <h2 className="font-semibold text-gray-800 mb-4 sm:mb-6">業界別（棒グラフ）</h2>
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={industryData}>
                   <XAxis dataKey="name" tick={{ fontSize: 11 }} />
@@ -141,11 +141,11 @@ function StatCard({ icon, label, value, unit, alert }: {
   icon: React.ReactNode; label: string; value: number; unit: string; alert?: boolean;
 }) {
   return (
-    <div className={`bg-white rounded-lg shadow-sm p-6 flex items-center gap-4 ${alert ? "border border-gray-300" : ""}`}>
-      <div className="p-3 bg-gray-50 rounded-lg shrink-0">{icon}</div>
+    <div className={`bg-white rounded-lg shadow-sm p-4 sm:p-6 flex items-center gap-3 sm:gap-4 ${alert ? "border border-gray-300" : ""}`}>
+      <div className="p-2 sm:p-3 bg-gray-50 rounded-lg shrink-0">{icon}</div>
       <div>
         <p className="text-xs text-gray-500">{label}</p>
-        <p className="text-2xl font-semibold text-gray-800">
+        <p className="text-xl sm:text-2xl font-semibold text-gray-800">
           {value}<span className="text-sm font-normal text-gray-600 ml-1">{unit}</span>
         </p>
       </div>
@@ -155,9 +155,9 @@ function StatCard({ icon, label, value, unit, alert }: {
 
 function KpiCard({ label, value, unit }: { label: string; value: number | string; unit?: string }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
       <p className="text-xs text-gray-500">{label}</p>
-      <p className="text-2xl font-semibold text-gray-800 mt-2">
+      <p className="text-xl sm:text-2xl font-semibold text-gray-800 mt-2">
         {value}
         {unit && <span className="text-sm font-normal text-gray-600 ml-1">{unit}</span>}
       </p>

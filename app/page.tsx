@@ -79,9 +79,9 @@ export default function Dashboard() {
     <div className="space-y-9">
       <h1 className="text-2xl font-semibold text-gray-800">ダッシュボード</h1>
 
-      <div className="grid md:grid-cols-2 gap-9 items-start">
+      <div className="grid md:grid-cols-2 gap-5 sm:gap-9 items-start">
         {/* 未完了タスク */}
-        <section className="bg-white rounded-lg shadow-sm p-8">
+        <section className="bg-white rounded-lg shadow-sm p-4 sm:p-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <CheckSquare size={20} className="text-brand-500" />
@@ -159,7 +159,7 @@ export default function Dashboard() {
         </section>
 
         {/* 直近の面接日程 */}
-        <section className="bg-white rounded-lg shadow-sm p-8">
+        <section className="bg-white rounded-lg shadow-sm p-4 sm:p-8">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <CalendarDays size={20} className="text-brand-500" />
@@ -179,9 +179,9 @@ export default function Dashboard() {
                 <li key={c.id}>
                   <button
                     onClick={() => setMemo({ type: "interview", id: c.id, name: c.name, notes: c.notes ?? "", interviewDate: c.interviewDate ?? "" })}
-                    className="w-full py-3.5 flex items-start gap-4 text-left hover:bg-gray-50 rounded-lg px-2 -mx-2 transition-colors"
+                    className="w-full py-3.5 flex items-start gap-3 text-left hover:bg-gray-50 rounded-lg px-2 -mx-2 transition-colors"
                   >
-                    <span className="text-sm font-bold text-brand-500 shrink-0 mt-0.5 w-32 leading-snug">
+                    <span className="text-sm font-bold text-brand-500 shrink-0 mt-0.5 leading-snug">
                       {formatDatetime(c.interviewDate)}
                     </span>
                     <div className="flex-1 min-w-0">
@@ -218,7 +218,7 @@ export default function Dashboard() {
       {/* メモモーダル */}
       {memo && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-8 space-y-5">
+          <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-5 sm:p-8 space-y-5">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs text-gray-400 mb-1">

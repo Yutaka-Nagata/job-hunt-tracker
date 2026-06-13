@@ -180,13 +180,13 @@ export default function TasksPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-gray-800">タスク</h1>
-        <button onClick={() => setShowForm(true)} className="flex items-center gap-2 bg-brand-500 text-white px-5 py-3 rounded-lg text-sm font-medium hover:opacity-90">
-          <Plus size={16} /> タスクを追加
+        <button onClick={() => setShowForm(true)} className="flex items-center gap-1.5 bg-brand-500 text-white px-3 py-2.5 rounded-lg text-sm font-medium hover:opacity-90">
+          <Plus size={15} /> <span className="hidden sm:inline">タスクを追加</span><span className="sm:hidden">追加</span>
         </button>
       </div>
 
       {/* フィルター */}
-      <div className="bg-white rounded-lg shadow-sm p-6 space-y-5">
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 space-y-4 sm:space-y-5">
         <div className="flex items-center gap-2 text-xs font-medium text-gray-500">
           <Filter size={13} /> フィルター
           {activeFilterCount > 0 && (
@@ -239,20 +239,20 @@ export default function TasksPage() {
       </div>
 
       {/* ソート */}
-      <div className="flex items-center gap-3 text-xs text-gray-500 px-1">
-        <ArrowUpDown size={13} />
-        <span>並び替え：</span>
-        {([["deadline", "締切順"], ["desirability", "志望度順"], ["company", "企業名順"]] as [SortKey, string][]).map(([key, label]) => (
+      <div className="flex items-center gap-2 text-xs text-gray-500 px-1 overflow-x-auto">
+        <ArrowUpDown size={13} className="shrink-0" />
+        <span className="shrink-0">並び替え：</span>
+        {([["deadline", "締切"], ["desirability", "志望度"], ["company", "企業名"]] as [SortKey, string][]).map(([key, label]) => (
           <button key={key} onClick={() => {
             if (sortKey === key) setSortDir(d => d === "asc" ? "desc" : "asc");
             else { setSortKey(key); setSortDir("asc"); }
           }}
-            className={`flex items-center gap-1 px-3 py-1 rounded transition-colors ${sortKey === key ? "bg-brand-50 text-brand-500 font-medium" : "hover:bg-gray-100"}`}>
+            className={`flex items-center gap-1 px-2.5 py-1 rounded shrink-0 transition-colors ${sortKey === key ? "bg-brand-50 text-brand-500 font-medium" : "hover:bg-gray-100"}`}>
             {label}
             {sortKey === key && (sortDir === "asc" ? <ArrowUp size={11} /> : <ArrowDown size={11} />)}
           </button>
         ))}
-        <span className="ml-auto text-gray-400">{totalFiltered}件</span>
+        <span className="ml-auto text-gray-400 shrink-0">{totalFiltered}件</span>
       </div>
 
       {/* グループ表示 */}
@@ -268,7 +268,7 @@ export default function TasksPage() {
             return (
               <div key={companyId} className="bg-white rounded-lg shadow-sm overflow-hidden">
                 {/* グループヘッダー */}
-                <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between gap-4">
+                <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
                     {company ? (
                       <>
@@ -296,7 +296,7 @@ export default function TasksPage() {
                   {sorted.map((t) => {
                     const over = !t.done && t.dueDate && isOverdue(t.dueDate);
                     return (
-                      <li key={t.id} className="px-6 py-4 flex items-center gap-4">
+                      <li key={t.id} className="px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-3">
                         <button
                           onClick={() => toggleDone(t.id)}
                           className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-colors ${t.done ? "bg-brand-500 border-brand-500" : "border-gray-300 hover:border-brand-500"}`}
@@ -313,10 +313,10 @@ export default function TasksPage() {
                           {t.notes && <NotebookPen size={12} className="inline ml-2 text-gray-400" />}
                         </button>
                         {t.dueDate && (
-                          <span className={`text-xs font-mono shrink-0 px-2.5 py-1 rounded ${
+                          <span className={`text-xs font-mono shrink-0 px-2 py-1 rounded leading-tight text-right ${
                             over ? "bg-gray-200 text-gray-800 font-semibold" : "bg-gray-100 text-gray-500"
                           }`}>
-                            {formatDatetime(t.dueDate)}
+                            {formatDatetime(t.dueDate).replace(" ", "\n")}
                           </span>
                         )}
                         <button onClick={() => removeTask(t.id)} className="p-1.5 text-gray-300 hover:text-gray-600 hover:bg-gray-100 rounded shrink-0">
@@ -335,7 +335,7 @@ export default function TasksPage() {
       {/* メモモーダル */}
       {memoTask && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-8 space-y-5">
+          <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-5 sm:p-8 space-y-5">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs text-gray-400 mb-1">タスク</p>
@@ -367,7 +367,7 @@ export default function TasksPage() {
       {/* タスク追加モーダル */}
       {showForm && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-8 space-y-5">
+          <div className="bg-white rounded-lg shadow-sm w-full max-w-md p-5 sm:p-8 space-y-5">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-lg text-gray-800">タスクを追加</h2>
               <button onClick={() => setShowForm(false)} className="text-gray-400 hover:text-gray-600"><X size={20} /></button>

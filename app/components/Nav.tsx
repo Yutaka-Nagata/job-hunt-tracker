@@ -1,16 +1,19 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Building2, CheckSquare, BarChart2, Settings, Download, Upload, ChevronDown } from "lucide-react";
+import {
+  LayoutDashboard, Building2, CheckSquare, BarChart2,
+  Settings, Download, Upload, ChevronDown,
+} from "lucide-react";
 import { useApp } from "../context";
 import { saveCompanies, saveTasks, saveStatuses } from "../store";
 import { useState, useRef, useEffect } from "react";
 
 const links = [
-  { href: "/", label: "ダッシュボード", icon: LayoutDashboard },
-  { href: "/companies", label: "企業管理", icon: Building2 },
-  { href: "/tasks", label: "タスク", icon: CheckSquare },
-  { href: "/stats", label: "統計", icon: BarChart2 },
+  { href: "/",           label: "ホーム",   icon: LayoutDashboard },
+  { href: "/companies",  label: "企業",     icon: Building2 },
+  { href: "/tasks",      label: "タスク",   icon: CheckSquare },
+  { href: "/stats",      label: "統計",     icon: BarChart2 },
 ];
 
 export default function Nav() {
@@ -74,57 +77,82 @@ export default function Nav() {
   }
 
   return (
-    <nav className="sticky top-0 z-40 bg-white border-b shadow-sm">
-      <div className="max-w-5xl mx-auto px-6 flex items-center gap-2 h-16">
-        <span className="font-semibold text-brand-500 mr-6 text-lg">就活トラッカー</span>
-        {links.map(({ href, label, icon: Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            className={`flex items-center gap-2 px-4 py-3 rounded-md text-sm font-medium transition-colors ${
-              pathname === href
-                ? "bg-gray-100 text-brand-500"
-                : "text-gray-600 hover:bg-gray-100"
-            }`}
-          >
-            <Icon size={16} />
-            {label}
-          </Link>
-        ))}
+    <>
+      {/* ─── デスクトップ用トップナビ ─── */}
+      <nav className="sticky top-0 z-40 bg-white border-b shadow-sm">
+        <div className="max-w-5xl mx-auto px-6 flex items-center gap-2 h-16">
+          <span className="font-semibold text-brand-500 text-lg">就活トラッカー</span>
 
-        {/* 設定ドロップダウン */}
-        <div className="ml-auto relative" ref={menuRef}>
-          <button
-            onClick={() => setOpen((v) => !v)}
-            className={`flex items-center gap-2 px-4 py-3 rounded-md text-sm font-medium transition-colors ${
-              open ? "bg-gray-100 text-brand-500" : "text-gray-600 hover:bg-gray-100"
-            }`}
-          >
-            <Settings size={16} />
-            設定
-            <ChevronDown size={13} className={`transition-transform ${open ? "rotate-180" : ""}`} />
-          </button>
+          {/* デスクトップリンク */}
+          <div className="hidden md:flex items-center gap-1 ml-6">
+            {links.map(({ href, label, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
+                  pathname === href
+                    ? "bg-gray-100 text-brand-500"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <Icon size={16} />
+                {label === "ホーム" ? "ダッシュボード" : label}
+              </Link>
+            ))}
+          </div>
 
-          {open && (
-            <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-sm py-1 z-50">
-              <button
-                onClick={handleImport}
-                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                <Upload size={14} className="text-gray-400" />
-                データをインポート
-              </button>
-              <button
-                onClick={handleExport}
-                className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                <Download size={14} className="text-gray-400" />
-                データをエクスポート
-              </button>
-            </div>
-          )}
+          {/* 設定ドロップダウン */}
+          <div className="ml-auto relative" ref={menuRef}>
+            <button
+              onClick={() => setOpen((v) => !v)}
+              className={`flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
+                open ? "bg-gray-100 text-brand-500" : "text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              <Settings size={16} />
+              <span className="hidden sm:inline">設定</span>
+              <ChevronDown size={13} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+            </button>
+
+            {open && (
+              <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-sm py-1 z-50">
+                <button
+                  onClick={handleImport}
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <Upload size={14} className="text-gray-400" />
+                  データをインポート
+                </button>
+                <button
+                  onClick={handleExport}
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                >
+                  <Download size={14} className="text-gray-400" />
+                  データをエクスポート
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* ─── モバイル用ボトムタブ ─── */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-sm md:hidden">
+        <div className="flex">
+          {links.map(({ href, label, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className={`flex-1 flex flex-col items-center justify-center py-2.5 gap-1 text-[10px] font-medium transition-colors ${
+                pathname === href ? "text-brand-500" : "text-gray-400"
+              }`}
+            >
+              <Icon size={20} strokeWidth={pathname === href ? 2.5 : 1.75} />
+              {label}
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </>
   );
 }
